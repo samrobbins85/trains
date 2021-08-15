@@ -1,5 +1,4 @@
-// const chalk = require("chalk")
-const c = require("ansi-colors")
+import c from "ansi-colors"
 addEventListener('fetch', event => {
   event.respondWith(handleRequest(event.request))
 })
