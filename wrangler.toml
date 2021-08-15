@@ -1,7 +1,7 @@
-name = "my-worker"
+name = "trains"
 type = "webpack"
 
-account_id = ""
+account_id = "66d6fdd58c9ff10e4ec971314a20ee08"
 workers_dev = true
 route = ""
 zone_id = ""
