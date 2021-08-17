@@ -1,15 +1,5 @@
-# 👷 `worker-template` Hello World
+# Trains 🚆🚆🚆
 
-A template for kick starting a Cloudflare worker project.
+## Acknowledgements
 
-[`index.js`](https://github.com/cloudflare/worker-template/blob/master/index.js) is the content of the Workers script.
-
-#### Wrangler
-
-To generate using [wrangler](https://github.com/cloudflare/wrangler)
-
-```
-wrangler generate projectname https://github.com/cloudflare/worker-template
-```
-
-Further documentation for Wrangler can be found [here](https://developers.cloudflare.com/workers/tooling/wrangler).
+- [Station Location Data](https://github.com/ellcom/UK-Train-Station-Locations)
