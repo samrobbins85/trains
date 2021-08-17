@@ -3,5 +3,8 @@ type = "webpack"
 
 account_id = "66d6fdd58c9ff10e4ec971314a20ee08"
 workers_dev = true
-route = ""
-zone_id = ""
+
+
+[env.production]
+route = "departures.tk/*"
+zone_id = "2f32ef42d1fbcecbd406b7cca92c2d7f"
