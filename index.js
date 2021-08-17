@@ -38,10 +38,13 @@ router.get("/:station", async ({ params }) => {
 
 router.get("/", async (request) => {
   const cf = request.cf;
-  const closest = findNearest(
-    { latitude: cf.latitude, longitude: cf.longitude },
-    station_list
-  );
+  var closest = "KGX";
+  if (cf !== undefined && cf.country === "GB") {
+    closest = findNearest(
+      { latitude: cf.latitude, longitude: cf.longitude },
+      station_list
+    );
+  }
   const result = await getDepartureBoard(closest["3alpha"]);
   return new Response(result);
 });
