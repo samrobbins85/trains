@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "ansi-colors": "^4.1.1",
+    "itty-router": "^2.4.2",
     "ldbs-json": "^1.2.1",
     "table": "^6.7.1"
   }

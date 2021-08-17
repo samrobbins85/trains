@@ -1,20 +1,18 @@
 import c from "ansi-colors";
 import { table } from "table";
+import { Router } from "itty-router";
 const useStaffVersion = false;
 const LiveDepartureBoardService = require("ldbs-json");
+
+const router = Router();
+
 addEventListener("fetch", (event) => {
-  event.respondWith(handleRequest(event.request));
+  event.respondWith(router.handle(event.request));
 });
-/**
- * Respond with hello worker text
- * @param {Request} request
- */
-async function handleRequest(request) {
-  const options = {
-    crs: "DHM",
-  };
+
+async function getDepartureBoard(station) {
   const api = new LiveDepartureBoardService(nationalrail, useStaffVersion);
-  const resp = await api.call("GetDepBoardWithDetails", options);
+  const resp = await api.call("GetDepBoardWithDetails", { crs: station });
   const data = resp.GetStationBoardResult.trainServices.service.map((item) => [
     c.yellowBright(item.std),
     c.yellowBright(item.destination.location.crs),
@@ -22,22 +20,21 @@ async function handleRequest(request) {
     c.yellowBright(item.etd),
   ]);
   data.unshift(["Time", "Destination", "Plat", "Expected"]);
-  // const data = [
-  //   ["0A", "0B", "0C"],
-  //   ["1A", "1B", "1C"],
-  //   ["2A", "2B", "2C"],
-  // ];
-  // return new Response(
-  //   c.blue(
-  //     `${resp.GetStationBoardResult.trainServices.service[0].destination.location.crs}\n`
-  //   )
-  // );
-  return new Response(
-    table(data, {
-      header: {
-        alignment: "center",
-        content: resp.GetStationBoardResult.locationName,
-      },
-    })
-  );
+  return table(data, {
+    header: {
+      alignment: "center",
+      content: resp.GetStationBoardResult.locationName,
+    },
+  });
 }
+
+router.get("/:station", async ({ params }) => {
+  let input = decodeURIComponent(params.station).toUpperCase();
+  const result = await getDepartureBoard(input);
+  return new Response(result);
+});
+
+router.get("/", async (request) => {
+  const result = await getDepartureBoard("KGX");
+  return new Response(result);
+});
