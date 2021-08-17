@@ -19,7 +19,7 @@ async function getDepartureBoard(station) {
     c.yellowBright(item.std),
     c.yellowBright(item.destination.location.crs),
     c.yellowBright(item.platform || ""),
-    c.yellowBright(item.etd),
+    c.yellowBright(item.cancelReason ? "Cancelled" : item.etd),
   ]);
   data.unshift(["Time", "Destination", "Plat", "Expected"]);
   return table(data, {
