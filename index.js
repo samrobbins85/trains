@@ -1,6 +1,8 @@
 import c from "ansi-colors";
 import { table } from "table";
 import { Router } from "itty-router";
+import station_list from "./station_locations";
+import { findNearest } from "geolib";
 const useStaffVersion = false;
 const LiveDepartureBoardService = require("ldbs-json");
 
@@ -35,6 +37,11 @@ router.get("/:station", async ({ params }) => {
 });
 
 router.get("/", async (request) => {
-  const result = await getDepartureBoard("KGX");
+  const cf = request.cf;
+  const closest = findNearest(
+    { latitude: cf.latitude, longitude: cf.longitude },
+    station_list
+  );
+  const result = await getDepartureBoard(closest["3alpha"]);
   return new Response(result);
 });
