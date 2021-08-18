@@ -15,19 +15,25 @@ addEventListener("fetch", (event) => {
 async function getDepartureBoard(station) {
   const api = new LiveDepartureBoardService(nationalrail, useStaffVersion);
   const resp = await api.call("GetDepBoardWithDetails", { crs: station });
-  const data = resp.GetStationBoardResult.trainServices.service.map((item) => [
-    c.yellowBright(item.std),
-    c.yellowBright(item.destination.location.crs),
-    c.yellowBright(item.platform || ""),
-    c.yellowBright(item.cancelReason ? "Cancelled" : item.etd),
-  ]);
-  data.unshift(["Time", "Destination", "Plat", "Expected"]);
-  return table(data, {
-    header: {
-      alignment: "center",
-      content: resp.GetStationBoardResult.locationName,
-    },
-  });
+  if (resp) {
+    const data = resp.GetStationBoardResult.trainServices.service.map(
+      (item) => [
+        c.yellowBright(item.std),
+        c.yellowBright(item.destination.location.crs),
+        c.yellowBright(item.platform || ""),
+        c.yellowBright(item.cancelReason ? "Cancelled" : item.etd),
+      ]
+    );
+    data.unshift(["Time", "Destination", "Plat", "Expected"]);
+    return table(data, {
+      header: {
+        alignment: "center",
+        content: resp.GetStationBoardResult.locationName,
+      },
+    });
+  } else {
+    return "That station could not be found\n";
+  }
 }
 
 router.get("/:station", async ({ params }) => {
