@@ -6,17 +6,34 @@ import { findNearest } from "geolib";
 const useStaffVersion = false;
 const LiveDepartureBoardService = require("ldbs-json");
 
+const terminals = [
+  "curl",
+  "httpie",
+  "lwp-request",
+  "wget",
+  "python-requests",
+  "openbsd ftp",
+  "powershell",
+  "fetch",
+  "aiohttp",
+];
+
 const router = Router();
 
 addEventListener("fetch", (event) => {
   event.respondWith(router.handle(event.request));
 });
 
-async function getDepartureBoard(station) {
+async function getDepartureData(station) {
   const api = new LiveDepartureBoardService(nationalrail, useStaffVersion);
   const resp = await api.call("GetDepBoardWithDetails", { crs: station });
-  if (resp) {
-    const data = resp.GetStationBoardResult.trainServices.service.map(
+  return resp;
+}
+
+async function getDepartureBoard(station) {
+  const departureData = await getDepartureData(station);
+  if (departureData) {
+    const data = departureData.GetStationBoardResult.trainServices.service.map(
       (item) => [
         c.yellowBright(item.std),
         c.yellowBright(item.destination.location.crs),
@@ -28,7 +45,7 @@ async function getDepartureBoard(station) {
     return table(data, {
       header: {
         alignment: "center",
-        content: resp.GetStationBoardResult.locationName,
+        content: departureData.GetStationBoardResult.locationName,
       },
     });
   } else {
@@ -36,21 +53,74 @@ async function getDepartureBoard(station) {
   }
 }
 
-router.get("/:station", async ({ params }) => {
-  let input = decodeURIComponent(params.station).toUpperCase();
-  const result = await getDepartureBoard(input);
-  return new Response(result);
-});
+function isTerminal(request) {
+  return terminals.some((element) =>
+    request.headers.get("User-Agent").includes(element)
+  );
+}
 
-router.get("/", async (request) => {
-  const cf = request.cf;
-  var closest = "KGX";
+function nearestStation(cf) {
+  let closest = "KGX";
   if (cf !== undefined && cf.country === "GB") {
     closest = findNearest(
       { latitude: cf.latitude, longitude: cf.longitude },
       station_list
     );
   }
-  const result = await getDepartureBoard(closest["3alpha"]);
-  return new Response(result);
+  return closest;
+}
+
+// This is a browser wanting the equivalent of /
+router.get("/json", async (request) => {
+  const cf = request.cf;
+  const closest = nearestStation(cf);
+  console.log(closest);
+  return new Response(
+    JSON.stringify(await getDepartureData(closest["3alpha"])),
+    {
+      headers: {
+        "content-type": "application/json;charset=UTF-8",
+      },
+    }
+  );
 });
+
+router.get("/:station", async (req) => {
+  let input = decodeURIComponent(req.params.station).toUpperCase();
+  // Station codes only have length 3
+  if (input.length === 3) {
+    if (isTerminal(req)) {
+      const result = await getDepartureBoard(input);
+      return new Response(result);
+    } else {
+      return Response.redirect(`https://samrobbins.uk/${req.params.station}`);
+    }
+  } else {
+    return new Response("Not Found.", { status: 404 });
+  }
+});
+
+// This is a browser wanting the equivalent of /station
+router.get("/json/:station", async ({ params }) => {
+  let input = decodeURIComponent(params.station).toUpperCase();
+  if (input.length === 3) {
+    return new Response(JSON.stringify(await getDepartureData(input)), {
+      headers: {
+        "content-type": "application/json;charset=UTF-8",
+      },
+    });
+  }
+});
+
+router.get("/", async (request) => {
+  const cf = request.cf;
+  if (isTerminal) {
+    const closest = nearestStation(cf);
+    const result = await getDepartureBoard(closest["3alpha"]);
+    return new Response(result);
+  } else {
+    return Response.redirect("https://samrobbins.uk");
+  }
+});
+
+router.all("*", () => new Response("Not Found.", { status: 404 }));
