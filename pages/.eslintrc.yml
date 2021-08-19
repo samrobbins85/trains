@@ -1,0 +1,27 @@
+env:
+    browser: true
+    es2021: true
+extends:
+    - "airbnb"
+    - "airbnb/hooks"
+    - "prettier"
+    - "next"
+parserOptions:
+    ecmaFeatures:
+        jsx: true
+    ecmaVersion: 12
+    sourceType: module
+rules:
+    {
+        "jsx-a11y/anchor-is-valid": 0,
+        "react/react-in-jsx-scope": 0,
+        "react/prop-types": 0,
+        "no-undef": 0,
+        "react/jsx-props-no-spreading": 0,
+    }
+settings:
+    linkComponents:
+        - name: Link
+          linkAttribute: href
+    react:
+        version: detect

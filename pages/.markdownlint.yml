@@ -1,0 +1,4 @@
+# Allow any spacing after list item
+MD030: false
+# Allow any line length
+MD013: false
