@@ -94,7 +94,9 @@ router.get("/:station", async (req) => {
       const result = await getDepartureBoard(input);
       return new Response(result);
     } else {
-      return Response.redirect(`https://samrobbins.uk/${req.params.station}`);
+      return Response.redirect(
+        `https://trains.pages.dev/${req.params.station}`
+      );
     }
   } else {
     return new Response("Not Found.", { status: 404 });
@@ -116,12 +118,12 @@ router.get("/json/:station", async ({ params }) => {
 
 router.get("/", async (request) => {
   const cf = request.cf;
-  if (isTerminal) {
+  if (isTerminal(request)) {
     const closest = nearestStation(cf);
     const result = await getDepartureBoard(closest["3alpha"]);
     return new Response(result);
   } else {
-    return Response.redirect("https://samrobbins.uk");
+    return Response.redirect("https://trains.pages.dev");
   }
 });
 

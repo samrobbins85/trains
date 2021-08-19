@@ -17,7 +17,7 @@ export default function IndexPage() {
 				Looks like that station does not exist
 			</div>
 		);
-	if (!data) return null;
+	if (!data) return <p>Loading</p>;
 	return (
 		<>
 			<Head>
