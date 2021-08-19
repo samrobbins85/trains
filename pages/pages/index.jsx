@@ -1,18 +1,16 @@
-import Head from "next/head";
+import Link from "next/link";
 
-export default function IndexPage() {
+export default function HomePage() {
 	return (
-		<>
-			<Head>
-				<title>Next.js Template</title>
-				<meta
-					name="Description"
-					content="My template Next.js application"
-				/>
-			</Head>
-			<div>
-				<h1 className="text-center">Hello, World </h1>
+		<div className="text-center font-array text-5xl text-yellow-300 pt-6">
+			<h1 className="pb-10">Departure Boards</h1>
+			<div className="pb-4">Go to /stationcode to view your station</div>
+			<div className="text-4xl">
+				For example{" "}
+				<Link href="/kgx">
+					<a className="underline text-white">/kgx</a>
+				</Link>
 			</div>
-		</>
+		</div>
 	);
 }

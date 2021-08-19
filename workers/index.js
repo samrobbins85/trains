@@ -80,6 +80,7 @@ router.get("/json", async (request) => {
     {
       headers: {
         "content-type": "application/json;charset=UTF-8",
+        "Access-Control-Allow-Origin": "*",
       },
     }
   );
@@ -107,6 +108,7 @@ router.get("/json/:station", async ({ params }) => {
     return new Response(JSON.stringify(await getDepartureData(input)), {
       headers: {
         "content-type": "application/json;charset=UTF-8",
+        "Access-Control-Allow-Origin": "*",
       },
     });
   }
