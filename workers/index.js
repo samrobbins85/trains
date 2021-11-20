@@ -33,21 +33,25 @@ async function getDepartureData(station) {
 async function getDepartureBoard(station) {
   const departureData = await getDepartureData(station);
   if (departureData) {
-    const data = departureData.GetStationBoardResult.trainServices.service.map(
-      (item) => [
-        c.yellowBright(item.std),
-        c.yellowBright(item.destination.location.crs),
-        c.yellowBright(item.platform || ""),
-        c.yellowBright(item.cancelReason ? "Cancelled" : item.etd),
-      ]
-    );
-    data.unshift(["Time", "Destination", "Plat", "Expected"]);
-    return table(data, {
-      header: {
-        alignment: "center",
-        content: departureData.GetStationBoardResult.locationName,
-      },
-    });
+    if (departureData.GetStationBoardResult.trainServices) {
+      const data = departureData.GetStationBoardResult.trainServices.service.map(
+        (item) => [
+          c.yellowBright(item.std),
+          c.yellowBright(item.destination.location.crs),
+          c.yellowBright(item.platform || ""),
+          c.yellowBright(item.cancelReason ? "Cancelled" : item.etd),
+        ]
+      );
+      data.unshift(["Time", "Destination", "Plat", "Expected"]);
+      return table(data, {
+        header: {
+          alignment: "center",
+          content: departureData.GetStationBoardResult.locationName,
+        },
+      });
+    } else {
+      return "That station doesn't have any departures\n";
+    }
   } else {
     return "That station could not be found\n";
   }
@@ -74,7 +78,6 @@ function nearestStation(cf) {
 router.get("/json", async (request) => {
   const cf = request.cf;
   const closest = nearestStation(cf);
-  console.log(closest);
   return new Response(
     JSON.stringify(await getDepartureData(closest["3alpha"])),
     {
