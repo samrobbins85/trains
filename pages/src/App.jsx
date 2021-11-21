@@ -1,17 +1,13 @@
 import "./App.css";
-import { Switch, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import Station from "./pages/station";
 import Index from "./pages";
 function App() {
   return (
-    <Switch>
-      <Route exact path="/">
-        <Index />
-      </Route>
-      <Route path="/:station">
-        <Station />
-      </Route>
-    </Switch>
+    <Routes>
+      <Route exact path="/" element={<Index />} />
+      <Route path="/:station" element={<Station />} />
+    </Routes>
   );
 }
 
