@@ -94,9 +94,9 @@ router.get("/assets/:file", async (req) => {
   return fetch(`https://trains.pages.dev/assets/${file}`);
 });
 
-router.get("/fonts/array/:file", async (req) => {
+router.get("/fonts/:file", async (req) => {
   let file = decodeURIComponent(req.params.file);
-  return fetch(`https://trains.pages.dev/fonts/array/${file}`);
+  return fetch(`https://trains.pages.dev/fonts/${file}`);
 });
 
 router.get("/:station", async (req) => {
@@ -109,8 +109,6 @@ router.get("/:station", async (req) => {
     } else {
       return fetch(`https://trains.pages.dev/${req.params.station}`);
     }
-  } else {
-    return new Response("Not Found.", { status: 404 });
   }
 });
 
