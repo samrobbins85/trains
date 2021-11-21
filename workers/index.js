@@ -89,16 +89,6 @@ router.get("/json", async (request) => {
   );
 });
 
-router.get("/assets/:file", async (req) => {
-  let file = decodeURIComponent(req.params.file);
-  return fetch(`https://trains.pages.dev/assets/${file}`);
-});
-
-router.get("/fonts/:file", async (req) => {
-  let file = decodeURIComponent(req.params.file);
-  return fetch(`https://trains.pages.dev/fonts/${file}`);
-});
-
 router.get("/:station", async (req) => {
   let input = decodeURIComponent(req.params.station).toUpperCase();
   // Station codes only have length 3
@@ -107,7 +97,9 @@ router.get("/:station", async (req) => {
       const result = await getDepartureBoard(input);
       return new Response(result);
     } else {
-      return fetch(`https://trains.pages.dev/${req.params.station}`);
+      return Response.redirect(
+        `https://trains.pages.dev/${req.params.station}`
+      );
     }
   }
 });
@@ -132,7 +124,7 @@ router.get("/", async (request) => {
     const result = await getDepartureBoard(closest["3alpha"]);
     return new Response(result);
   } else {
-    return fetch("https://trains.pages.dev");
+    return Response.redirect("https://trains.pages.dev");
   }
 });
 
