@@ -16,3 +16,4 @@ jobs:
         with:
           apiToken: ${{ secrets.CF_API_TOKEN }}
           workingDirectory: workers
+          environment: "production"

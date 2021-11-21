@@ -107,9 +107,7 @@ router.get("/:station", async (req) => {
       const result = await getDepartureBoard(input);
       return new Response(result);
     } else {
-      return Response.redirect(
-        `https://trains.pages.dev/${req.params.station}`
-      );
+      return fetch(`https://trains.pages.dev/${req.params.station}`);
     }
   } else {
     return new Response("Not Found.", { status: 404 });
