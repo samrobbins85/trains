@@ -64,7 +64,7 @@ function isTerminal(request) {
 }
 
 function nearestStation(cf) {
-  let closest = "KGX";
+  let closest = null;
   if (cf !== undefined && cf.country === "GB") {
     closest = findNearest(
       { latitude: cf.latitude, longitude: cf.longitude },
@@ -120,8 +120,10 @@ router.get("/json/:station", async ({ params }) => {
 router.get("/", async (request) => {
   const cf = request.cf;
   if (isTerminal(request)) {
+    console.log(JSON.stringify(cf));
     const closest = nearestStation(cf);
-    const result = await getDepartureBoard(closest["3alpha"]);
+    console.log(closest);
+    const result = await getDepartureBoard(closest["3alpha"] || "KGX");
     return new Response(result);
   } else {
     return Response.redirect("https://trains.pages.dev");
