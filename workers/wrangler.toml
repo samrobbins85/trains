@@ -3,6 +3,7 @@ type = "webpack"
 
 account_id = "66d6fdd58c9ff10e4ec971314a20ee08"
 workers_dev = true
+compatibility_date = "2021-11-22"
 
 [env.production]
 route = "departures.tk/*"
