@@ -6,7 +6,7 @@ const fetcher = (...args) => fetch(...args).then((res) => res.json());
 export default function Station() {
   let { station } = useParams();
   const { data, error } = useSWR(
-    `https://departures.tk/json/${station}`,
+    `https://trains-production.samrobbins.workers.dev/json/${station}`,
     fetcher
   );
   if (error)
