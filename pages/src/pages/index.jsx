@@ -13,7 +13,9 @@ export default function Index() {
       </p>
       <p className="text-2xl pt-6">
         This also works from the command line, try{" "}
-        <span className="font-mono text-white">curl departures.tk</span>
+        <span className="font-mono text-white">
+          curl trains-production.samrobbins.workers.dev
+        </span>
       </p>
     </div>
   );

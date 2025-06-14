@@ -7,17 +7,16 @@ Like [wttr.in](https://wttr.in/), but for UK trains!
 Get my closest station (or Kings cross if you're outside the UK):
 
 ```sh
-curl departures.tk
+curl trains-production.samrobbins.workers.dev
 ```
 
 Get a specific station by its code:
 
 ```sh
-curl departures.tk/kgx
+curl trains-production.samrobbins.workers.dev/kgx
 ```
 
 If you access these from a browser, they'll redirect to the website
-
 
 ## Acknowledgements
 
