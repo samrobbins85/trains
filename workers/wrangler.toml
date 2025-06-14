@@ -1,10 +1,5 @@
 name = "trains"
-type = "webpack"
-
+main = "index.js"
 account_id = "66d6fdd58c9ff10e4ec971314a20ee08"
-workers_dev = true
-compatibility_date = "2021-11-22"
-
-[env.production]
-route = "departures.tk/*"
-zone_id = "2f32ef42d1fbcecbd406b7cca92c2d7f"
+compatibility_date = "2024-09-23"
+compatibility_flags = ["nodejs_compat"]

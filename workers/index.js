@@ -3,8 +3,9 @@ import { table } from "table";
 import { Router } from "itty-router";
 import station_list from "./station_locations";
 import { findNearest } from "geolib";
+import LiveDepartureBoardService from "ldbs-json";
+
 const useStaffVersion = false;
-const LiveDepartureBoardService = require("ldbs-json");
 
 const terminals = [
   "curl",
@@ -20,18 +21,14 @@ const terminals = [
 
 const router = Router();
 
-addEventListener("fetch", (event) => {
-  event.respondWith(router.handle(event.request));
-});
-
-async function getDepartureData(station) {
-  const api = new LiveDepartureBoardService(nationalrail, useStaffVersion);
+async function getDepartureData(station, env) {
+  const api = new LiveDepartureBoardService(env.nationalrail, useStaffVersion);
   const resp = await api.call("GetDepBoardWithDetails", { crs: station });
   return resp;
 }
 
-async function getDepartureBoard(station) {
-  const departureData = await getDepartureData(station);
+async function getDepartureBoard(station, env) {
+  const departureData = await getDepartureData(station, env);
   if (departureData) {
     if (departureData.GetStationBoardResult.trainServices) {
       const data = departureData.GetStationBoardResult.trainServices.service.map(
@@ -75,11 +72,11 @@ function nearestStation(cf) {
 }
 
 // This is a browser wanting the equivalent of /
-router.get("/json", async (request) => {
+router.get("/json", async (request, env) => {
   const cf = request.cf;
   const closest = nearestStation(cf);
   return new Response(
-    JSON.stringify(await getDepartureData(closest["3alpha"])),
+    JSON.stringify(await getDepartureData(closest["3alpha"], env)),
     {
       headers: {
         "content-type": "application/json;charset=UTF-8",
@@ -89,12 +86,12 @@ router.get("/json", async (request) => {
   );
 });
 
-router.get("/:station", async (req) => {
+router.get("/:station", async (req, env) => {
   let input = decodeURIComponent(req.params.station).toUpperCase();
   // Station codes only have length 3
   if (input.length === 3) {
     if (isTerminal(req)) {
-      const result = await getDepartureBoard(input);
+      const result = await getDepartureBoard(input, env);
       return new Response(result);
     } else {
       return Response.redirect(
@@ -105,10 +102,10 @@ router.get("/:station", async (req) => {
 });
 
 // This is a browser wanting the equivalent of /station
-router.get("/json/:station", async ({ params }) => {
+router.get("/json/:station", async ({ params }, env) => {
   let input = decodeURIComponent(params.station).toUpperCase();
   if (input.length === 3) {
-    return new Response(JSON.stringify(await getDepartureData(input)), {
+    return new Response(JSON.stringify(await getDepartureData(input, env)), {
       headers: {
         "content-type": "application/json;charset=UTF-8",
         "Access-Control-Allow-Origin": "*",
@@ -117,11 +114,14 @@ router.get("/json/:station", async ({ params }) => {
   }
 });
 
-router.get("/", async (request) => {
+router.get("/", async (request, env) => {
   const cf = request.cf;
   if (isTerminal(request)) {
     const closest = nearestStation(cf);
-    const result = await getDepartureBoard(closest ? closest["3alpha"] : "KGX");
+    const result = await getDepartureBoard(
+      closest ? closest["3alpha"] : "KGX",
+      env
+    );
     return new Response(result);
   } else {
     return Response.redirect("https://trains.pages.dev");
@@ -129,3 +129,9 @@ router.get("/", async (request) => {
 });
 
 router.all("*", () => new Response("Not Found.", { status: 404 }));
+
+export default {
+  async fetch(request, env, ctx) {
+    return router.handle(request, env, ctx);
+  },
+};
