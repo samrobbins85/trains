@@ -1,10 +1,6 @@
 import { defineConfig } from "vite";
-import reactRefresh from "@vitejs/plugin-react-refresh";
-
-// https://vitejs.dev/config/
+import react from "@vitejs/plugin-react";
+import tailwind from "@tailwindcss/vite";
 export default defineConfig({
-  plugins: [reactRefresh()],
-  esbuild: {
-    jsxInject: `import React from 'react'`,
-  },
+  plugins: [react(), tailwind()],
 });
