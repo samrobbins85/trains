@@ -1,6 +1,13 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+@theme {
+  /* Make Inter the default sans stack (what `extend.fontFamily.sans` did) */
+  --font-sans: "Inter var", ui-sans-serif, system-ui, sans-serif,
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+
+  /* New family that yields a `font-array` utility */
+  --font-array: "Array-Wide", var(--font-sans);
+}
 
 @font-face {
   font-family: "Inter var";

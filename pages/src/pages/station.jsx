@@ -31,15 +31,17 @@ export default function Station() {
               <th className="px-4 border">Platform</th>
               <th className="px-4 border">Expected</th>
             </thead>
-            <tbody className="text-yellow-300 font-array">
+            <tbody className="font-array text-amber-300">
               {data.GetStationBoardResult.trainServices.service.map((item) => (
                 <tr key={item.std}>
-                  <td className="border pl-2">{item.std}</td>
-                  <td className="border pl-2">
+                  <td className="border pl-2 border-white">{item.std}</td>
+                  <td className="border pl-2 border-white">
                     {item.destination.location.crs}
                   </td>
-                  <td className="border pl-2">{item.platform || ""}</td>
-                  <td className="border pl-2">
+                  <td className="border pl-2 border-white">
+                    {item.platform || ""}
+                  </td>
+                  <td className="border pl-2 border-white">
                     {item.cancelReason ? "Cancelled" : item.etd}
                   </td>
                 </tr>
@@ -47,7 +49,7 @@ export default function Station() {
             </tbody>
           </table>
         ) : (
-          <h2 className="text-center font-array text-yellow-300 text-xl">
+          <h2 className="text-center font-array text-amber-300 text-xl">
             This station has no departures
           </h2>
         )}
