@@ -124,7 +124,7 @@ router.get("/", async (request, env) => {
     );
     return new Response(result);
   } else {
-    return Response.redirect("https://trains.pages.dev");
+    return Response.redirect("https://departure-board.samrobbins.uk");
   }
 });
 
