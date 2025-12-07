@@ -1,0 +1,10 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "hono",
+  "compatibility_date": "2025-08-03",
+  "main": "./src/index.tsx",
+  "assets": {
+    "directory": "public"
+  },
+  "compatibility_flags": ["nodejs_compat"]
+}

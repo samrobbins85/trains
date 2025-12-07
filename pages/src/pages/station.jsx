@@ -16,7 +16,6 @@ export default function Station() {
       </div>
     );
   if (!data) return null;
-  console.log(data);
   return (
     <>
       <div className="pt-6">
