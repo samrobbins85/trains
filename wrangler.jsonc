@@ -1,10 +1,23 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "hono",
+  "name": "trains",
   "compatibility_date": "2025-08-03",
   "main": "./src/index.tsx",
   "assets": {
     "directory": "public"
   },
-  "compatibility_flags": ["nodejs_compat"]
+  "compatibility_flags": ["nodejs_compat"],
+  "observability": {
+    "logs": {
+      "enabled": true,
+      "head_sampling_rate": 1,
+      "invocation_logs": true,
+      "persist": true
+    },
+    "traces": {
+      "enabled": false,
+      "persist": true,
+      "head_sampling_rate": 1
+    }
+  }
 }
