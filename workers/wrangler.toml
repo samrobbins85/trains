@@ -1,5 +1,0 @@
-name = "trains"
-main = "index.js"
-account_id = "66d6fdd58c9ff10e4ec971314a20ee08"
-compatibility_date = "2024-09-23"
-compatibility_flags = ["nodejs_compat"]
