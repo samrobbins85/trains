@@ -1,4 +1,17 @@
-export default function DepartureTable({ data, isHome }) {
+import type { paths } from "../types/api";
+
+type DepartureBoardResponse =
+  paths["/api/20220120/GetDepartureBoard/{crs}"]["get"]["responses"]["200"]["content"]["text/json"];
+
+interface DepartureTableInterface {
+  data: DepartureBoardResponse;
+  isHome?: boolean;
+}
+
+export default function DepartureTable({
+  data,
+  isHome,
+}: DepartureTableInterface) {
   return (
     <>
       <link
@@ -26,7 +39,7 @@ export default function DepartureTable({ data, isHome }) {
                   <tr key={item.std}>
                     <td className="border pl-2 border-white">{item.std}</td>
                     <td className="border pl-2 border-white">
-                      {item.destination[0].locationName}
+                      {item.destination?.[0].locationName}
                     </td>
                     <td className="border pl-2 border-white">
                       {item.platform || ""}

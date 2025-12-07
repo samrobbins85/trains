@@ -7,14 +7,16 @@ import { table } from "table";
 import { GeolibInputCoordinates } from "geolib/es/types";
 import { isTerminal } from "./utils/isTerminal";
 import DepartureTable from "./depatureTable";
-
+import type { paths } from "../types/api";
 const app = new Hono<{ Bindings: CloudflareBindings }>();
+type DepartureBoardResponse =
+  paths["/api/20220120/GetDepartureBoard/{crs}"]["get"]["responses"]["200"]["content"]["text/json"];
 
 async function getDepartureData(
   station: string,
   token: string,
   api_url: string
-) {
+): Promise<DepartureBoardResponse> {
   const data = await fetch(
     api_url + `/LDBWS/api/20220120/GetDepartureBoard/${station}`,
     {
@@ -23,8 +25,7 @@ async function getDepartureData(
       },
     }
   );
-  const resp = await data.json();
-  return resp;
+  return await data.json();
 }
 
 function nearestStation(cf: any) {
@@ -46,7 +47,7 @@ function nearestStation(cf: any) {
   };
 }
 
-async function getDepartureBoard(departureData: any) {
+async function getDepartureBoard(departureData: DepartureBoardResponse) {
   if (departureData) {
     if (departureData.trainServices) {
       const data = departureData.trainServices.map((item: any) => [
@@ -59,7 +60,7 @@ async function getDepartureBoard(departureData: any) {
       return table(data, {
         header: {
           alignment: "center",
-          content: departureData.locationName,
+          content: departureData.locationName || "",
         },
       });
     } else {
