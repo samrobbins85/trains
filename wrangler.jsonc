@@ -6,7 +6,6 @@
   "assets": {
     "directory": "public"
   },
-  "compatibility_flags": ["nodejs_compat"],
   "observability": {
     "logs": {
       "enabled": true,
