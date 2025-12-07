@@ -5,6 +5,8 @@ export default function DepartureTable({ data, isHome }) {
         href="https://api.fontshare.com/v2/css?f[]=array@401&display=swap"
         rel="stylesheet"
       />
+      <link rel="icon" href="/favicon.ico" sizes="any" />
+      <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
       <title>{data.locationName} - Departure Board</title>
       <body class="bg-black text-white">
         <div className="pt-6">

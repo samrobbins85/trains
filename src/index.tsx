@@ -7,7 +7,6 @@ import { table } from "table";
 import { GeolibInputCoordinates } from "geolib/es/types";
 import { isTerminal } from "./utils/isTerminal";
 import DepartureTable from "./depatureTable";
-import { BlankInput } from "hono/types";
 
 const app = new Hono<{ Bindings: CloudflareBindings }>();
 
