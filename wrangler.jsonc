@@ -1,6 +1,6 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "trains",
+  "name": "train-site",
   "compatibility_date": "2025-08-03",
   "main": "./src/index.tsx",
   "assets": {
