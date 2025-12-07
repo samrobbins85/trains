@@ -89,6 +89,7 @@ const handleCRSCode = async (c: Context, code: string, isHome = false) => {
 };
 
 app.get("/", async (c) => {
+  console.log(c.env);
   const closest = nearestStation(c.req.raw.cf);
   return handleCRSCode(c, closest.crsCode || "KGX", true);
 });
