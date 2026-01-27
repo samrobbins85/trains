@@ -18,9 +18,9 @@
     "tailwindcss": "^4.1.17"
   },
   "devDependencies": {
-    "@cloudflare/vite-plugin": "^1.14.1",
+    "@cloudflare/vite-plugin": "^1.21.1",
     "vite": "^6.3.5",
     "vite-ssr-components": "^0.5.1",
-    "wrangler": "^4.17.0"
+    "wrangler": "^4.59.3"
   }
 }
